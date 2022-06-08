@@ -38,6 +38,16 @@ namespace IO.KnowledgeSharingPlatform.Infrastructure.Repository
             return entity;
         }
 
+        public virtual void AddRange(IEnumerable<TedTalk> entities)
+        {
+            Table.AddRange(entities);
+
+            foreach (var entity in entities)
+            {
+                Context.Entry(entity).State = EntityState.Added;
+            }
+        }
+
         public virtual TedTalk Update(TedTalk entity)
         {
             entity = Table.Attach(entity).Entity;

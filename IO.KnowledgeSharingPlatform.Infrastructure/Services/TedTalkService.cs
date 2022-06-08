@@ -1,6 +1,8 @@
-﻿using IO.KnowledgeSharingPlatform.Application.Interfaces.Repository;
+﻿using CsvHelper;
+using IO.KnowledgeSharingPlatform.Application.Interfaces.Repository;
 using IO.KnowledgeSharingPlatform.Application.Interfaces.Services;
 using IO.KnowledgeSharingPlatform.Core.Model;
+using System.Globalization;
 
 namespace IO.KnowledgeSharingPlatform.Infrastructure.Services
 {
@@ -39,6 +41,33 @@ namespace IO.KnowledgeSharingPlatform.Infrastructure.Services
             }
         }
 
+        public void SeedTedTalks()
+        {
+            try
+            {
+                var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture);
+
+                config.MissingFieldFound = null;
+                config.HeaderValidated = null;
+
+                using (var reader = new StreamReader("SeedData\\data.csv"))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    var tedTalks = csv.GetRecords<TedTalk>();
+                    Repository.AddRange(tedTalks);
+                }
+
+                if (AutoSave)
+                {
+                    SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public virtual void Update(TedTalk entity)
         {
             try
@@ -55,11 +84,11 @@ namespace IO.KnowledgeSharingPlatform.Infrastructure.Services
             }
         }
 
-        public virtual void Delete(string id)
+        public virtual void Delete(Guid id)
         {
             try
             {
-                var entity = Repository.Find(e => e.Id == Guid.Parse(id));
+                var entity = Repository.Find(e => e.Id == id);
                 if (entity != null)
                 {
                     Delete(entity);
@@ -104,16 +133,6 @@ namespace IO.KnowledgeSharingPlatform.Infrastructure.Services
         public virtual int SaveChanges()
         {
             return UnitOfWork.SaveChanges();
-        }
-
-
-        public DateTime? GetLocalTime(DateTime? time, Guid branchId)
-        {
-            if (time.HasValue)
-            {
-                return GetLocalTime(time.Value, branchId);
-            }
-            return time;
         }
     }
 }

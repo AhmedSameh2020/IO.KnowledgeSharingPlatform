@@ -18,19 +18,19 @@ namespace IO.KnowledgeSharingPlatform.Application.Handlers
         {
             var response = new GetTedTalkResponse();
 
-            switch (request.TedTalkFilter)
+            switch (request?.TedTalkFilter)
             {
                 case Core.Model.Enums.TedTalkFilterType.Author:
-                    response.TedTalks = _tedTalkService.Where(a => a.Author == request.SearchQuery).ToList();
+                    response.TedTalks = _tedTalkService.Where(a => a.Author.Contains(request.SearchQuery)).ToList();
                     break;
                 case Core.Model.Enums.TedTalkFilterType.Title:
-                    response.TedTalks = _tedTalkService.Where(a => a.Title == request.SearchQuery).ToList();
+                    response.TedTalks = _tedTalkService.Where(a => a.Title.Contains(request.SearchQuery)).ToList();
                     break;
                 case Core.Model.Enums.TedTalkFilterType.Views:
-                    response.TedTalks = _tedTalkService.Where(a => a.Views == request.SearchQuery).ToList();
+                    response.TedTalks = _tedTalkService.Where(a => a.Views.Contains(request.SearchQuery)).ToList();
                     break;
                 case Core.Model.Enums.TedTalkFilterType.Likes:
-                    response.TedTalks = _tedTalkService.Where(a => a.Likes == request.SearchQuery).ToList();
+                    response.TedTalks = _tedTalkService.Where(a => a.Likes.Contains(request.SearchQuery)).ToList();
                     break;
             }
 

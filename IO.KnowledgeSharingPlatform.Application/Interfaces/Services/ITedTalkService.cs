@@ -6,8 +6,9 @@ namespace IO.KnowledgeSharingPlatform.Application.Interfaces.Services
     {
         bool AutoSave { get; set; }
         TedTalk Add(TedTalk entity);
+        void SeedTedTalks();
         void Update(TedTalk entity);
-        void Delete(string title);
+        void Delete(Guid id);
         IQueryable<TedTalk> Where(System.Linq.Expressions.Expression<Func<TedTalk, bool>> predicate, params string[] includes);
         int SaveChanges();
     }

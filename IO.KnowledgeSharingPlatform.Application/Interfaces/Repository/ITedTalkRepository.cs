@@ -7,6 +7,8 @@ namespace IO.KnowledgeSharingPlatform.Application.Interfaces.Repository
     {
         TedTalk Add(TedTalk entity);
 
+        void AddRange(IEnumerable<TedTalk> entities);
+
         TedTalk Update(TedTalk entity);
 
         void Delete(TedTalk entity);

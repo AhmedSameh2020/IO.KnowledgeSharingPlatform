@@ -1,7 +1,5 @@
-﻿using CsvHelper;
-using IO.KnowledgeSharingPlatform.Core.Model;
+﻿using IO.KnowledgeSharingPlatform.Core.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace IO.KnowledgeSharingPlatform.Infrastructure.Repository
 {
@@ -17,16 +15,6 @@ namespace IO.KnowledgeSharingPlatform.Infrastructure.Repository
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TedTalk>().HasKey(a => a.Id);
-            using (var reader = new StreamReader("SeedData\\data.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                var tedTalks = csv.GetRecords<TedTalk>();
-                foreach (var tedTalk in tedTalks)
-                {
-                    tedTalk.Id = Guid.NewGuid();
-                }
-                modelBuilder.Entity<TedTalk>().HasData(tedTalks);
-            }
         }
     }
 }

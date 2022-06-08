@@ -33,7 +33,7 @@ namespace IO.KnowledgeSharingPlatform.API.Controllers
             return StatusCode((int)HttpStatusCode.Created, await _mediator.Send(request));
         }
 
-        [HttpPut("{title}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(PutTedTalkResponse), (int)HttpStatusCode.OK)]
         [Produces("application/json", Type = typeof(PutTedTalkResponse))]
         public async Task<ActionResult<PutTedTalkResponse>> Put(Guid id, PutTedTalkRequest request)
@@ -42,7 +42,7 @@ namespace IO.KnowledgeSharingPlatform.API.Controllers
             return StatusCode((int)HttpStatusCode.OK, await _mediator.Send(request));
         }
 
-        [HttpDelete("{title}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(DeleteTedTalkResponse), (int)HttpStatusCode.OK)]
         [Produces("application/json", Type = typeof(DeleteTedTalkResponse))]
         public async Task<ActionResult<DeleteTedTalkResponse>> Delete(DeleteTedTalkRequest request)

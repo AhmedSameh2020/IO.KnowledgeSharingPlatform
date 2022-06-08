@@ -5,11 +5,8 @@ using IO.KnowledgeSharingPlatform.Infrastructure.Repository;
 using IO.KnowledgeSharingPlatform.Infrastructure.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 ConfigurationManager configuration = builder.Configuration;
@@ -22,10 +19,23 @@ builder.Services.AddDbContext<KnowledgeSharingPlatformContext>(options => option
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+
+    var context = services.GetRequiredService<KnowledgeSharingPlatformContext>();
+    if (!context.Database.CanConnect())
+    {
+        context.Database.Migrate();
+
+        var tedTalkService = services.GetRequiredService<ITedTalkService>();
+        tedTalkService.SeedTedTalks();
+    }
+}
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

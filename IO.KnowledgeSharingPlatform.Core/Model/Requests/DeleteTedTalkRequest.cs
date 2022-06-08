@@ -5,6 +5,6 @@ namespace IO.KnowledgeSharingPlatform.Core.Model.Requests
 {
     public class DeleteTedTalkRequest : IRequest<DeleteTedTalkResponse>
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 }
